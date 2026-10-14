@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Resort Skardu in Gamba, Skardu — comfortable double rooms from PKR 3,023 per night. Rated 4.8 by guests.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Resort Skardu | Gamba, Skardu - Official Website</title>
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E🏔️%3C/text%3E%3C/svg%3E">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #f8f6f2;
+            color: #1a1a1a;
+            overflow-x: hidden;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            background: linear-gradient(135deg, #1a2a3a 0%, #0d1b2a 100%);
+            opacity: 0.15;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 1; transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes float {
+            0%,100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes glowPulse {
+            0% { box-shadow: 0 0 0 0 rgba(198, 164, 63, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(198, 164, 63, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(198, 164, 63, 0); }
+        }
+
+        @keyframes marqueeScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes fade {
+            0% { opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .float-animation {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: transparent;
+            backdrop-filter: blur(5px);
+            border-bottom: none;
+            padding: 0.8rem 2rem;
+            transition: transform 0.5s ease-in-out, background 0.3s;
+            transform: translateY(0);
+        }
+
+        .navbar.hide {
+            transform: translateY(-100%);
+        }
+
+        .navbar.scrolled {
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(12px);
+            padding: 0.5rem 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .navbar.scrolled .nav-links a {
+            color: #fff;
+        }
+
+        .navbar.scrolled .logo-text {
+            color: #fff;
+        }
+
+        .nav-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo-img {
+            width: 56px;
+            height: 50px;
+            object-fit: contain;
+            background: transparent;
+        }
+        
+        .logo-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .logo-text span {
+            color: #e4ab02;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #e4ab02;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #e4ab02;
+        }
+
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+        }
+
+        .hero {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex-direction: column;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4)), linear-gradient(135deg,#1b3a4b 0%,#2f5d62 45%,#0d1b2a 100%);
+            background-size: cover;
+            background-position: center 30%;
+            background-repeat: no-repeat;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 5rem;
+            font-weight: 700;
+            color: white;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 0.5rem;
+            animation: fadeInUp 1.0s ease-out 0.1s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-btn {
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+            animation: bounceIn 1s ease-out 0.5s both;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+        }
+
+        .hero-btn-primary {
+            background: #e4ab02;
+            color: #1a1a1a;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .hero-btn-primary:hover {
+            transform: scale(1.05);
+            background: #f5c542;
+        }
+
+        .hero-btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid #e4ab02;
+        }
+
+        .hero-btn-secondary:hover {
+            background: #e4ab02;
+            color: #1a1a1a;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 480px) {
+            .hero-buttons {
+                flex-direction: column;
+                gap: 1rem;
+                width: 80%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin: 3rem 0 2rem 0;
+            border-left: 4px solid #e4ab02;
+            padding-left: 1.2rem;
+            color: #1a1a1a;
+        }
+
+        .popup-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .popup-modal.active {
+            display: flex;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .popup-content {
+            background: white;
+            max-width: 550px;
+            width: 90%;
+            border-radius: 28px;
+            padding: 2rem;
+            position: relative;
+            animation: scaleIn 0.3s ease;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #888;
+            transition: 0.3s;
+        }
+
+        .popup-close:hover {
+            color: #e4ab02;
+            transform: rotate(90deg);
+        }
+
+        .popup-content h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            color: #e4ab02;
+            margin-bottom: 1.5rem;
+        }
+
+        .popup-field {
+            margin-bottom: 1rem;
+        }
+
+        .popup-field label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #888;
+            display: block;
+        }
+
+        .popup-field input,
+        .popup-field select {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            background: #fafafa;
+            transition: all 0.3s;
+        }
+
+        .popup-field input:focus,
+        .popup-field select:focus {
+            border-color: #e4ab02;
+            outline: none;
+            transform: scale(1.02);
+        }
+
+        .popup-btn {
+            background: #e4ab02;
+            color: #1a1a1a;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+            margin-top: 1rem;
+        }
+
+        .popup-btn:hover {
+            background: #1a1a1a;
+            color: white;
+            transform: scale(1.02);
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .hotel-gallery {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.8rem;
+            margin: 2rem 0;
+        }
+
+        .gallery-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.5s;
+            opacity: 0;
+            transform: translateY(30px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .gallery-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+        }
+
+        .gallery-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .gallery-card:hover .gallery-img img {
+            transform: scale(1.05);
+        }
+
+        .gallery-card .info {
+            padding: 1rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .rooms-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .room-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.5s;
+            opacity: 0;
+            transform: translateY(30px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .room-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .room-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .room-img {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .room-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .room-card:hover .room-img img {
+            transform: scale(1.05);
+        }
+
+        .room-info {
+            padding: 1.5rem;
+        }
+
+        .facilities-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.8rem;
+            margin: 2rem 0;
+        }
+
+        .facility-item {
+            background: white;
+            border-radius: 20px;
+            padding: 1.8rem;
+            text-align: center;
+            transition: all 0.4s;
+            opacity: 0;
+            transform: scale(0.9);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .facility-item.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .facility-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .facility-item i {
+            font-size: 2.5rem;
+            color: #e4ab02;
+            margin-bottom: 1rem;
+            transition: all 0.4s;
+        }
+
+        .facility-item:hover i {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .facilities-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+        }
+
+        .menu-section {
+            margin: 4rem 0;
+        }
+
+        .menu-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .menu-tab-btn {
+            padding: 12px 28px;
+            background: transparent;
+            border: 2px solid #e4ab02;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #1a1a1a;
+        }
+
+        .menu-tab-btn:hover,
+        .menu-tab-btn.active {
+            background: #e4ab02;
+            color: #1a1a1a;
+            transform: translateY(-2px);
+        }
+
+        .menu-tab-content {
+            display: none;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        .menu-tab-content.active {
+            display: block;
+        }
+
+        .menu-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .menu-header h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            color: #e4ab02;
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-time {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 1.2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+
+        .menu-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .item-name {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .item-price {
+            font-weight: 700;
+            color: #e4ab02;
+            background: #e4ab0220;
+            padding: 4px 12px;
+            border-radius: 30px;
+        }
+
+        @media (max-width: 700px) {
+            .menu-tab-btn {
+                padding: 8px 16px;
+                font-size: 0.7rem;
+            }
+            .menu-items {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* About Section - Chota */
+        .about-section-new {
+            background: white;
+            border-radius: 24px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .about-section-new p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 0.8rem;
+        }
+
+        /* Attractions - Simple (No borders/radius on mobile) */
+        .nearby-section {
+            background: #f0ede6;
+            margin: 3rem 0;
+            padding: 2rem;
+        }
+
+        .attractions-wrapper {
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .attractions-marquee {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marqueeScroll 25s linear infinite;
+        }
+
+        .attractions-marquee:hover {
+            animation-play-state: paused;
+            cursor: pointer;
+        }
+
+        .attractions-marquee .attraction-card {
+            display: inline-block;
+            white-space: normal;
+            vertical-align: top;
+            margin-right: 1.5rem;
+            width: 280px;
+            background: transparent;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .attractions-marquee .attraction-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .attraction-img {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            border-radius: 0;
+        }
+
+        .attraction-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .attraction-info {
+            padding: 0.8rem 0;
+        }
+
+        .attraction-info h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+            color: #1a1a1a;
+        }
+
+        .attraction-info p {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 0.3rem;
+        }
+
+        .distance-badge {
+            display: inline-block;
+            background: transparent;
+            color: #e4ab02;
+            padding: 0;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        /* Desktop normal grid */
+        @media (min-width: 769px) {
+            .attractions-marquee {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 1.5rem;
+                animation: none;
+                white-space: normal;
+            }
+            .attractions-marquee .attraction-card {
+                width: auto;
+                margin-right: 0;
+                background: transparent;
+            }
+            .attractions-wrapper {
+                overflow: visible;
+                white-space: normal;
+            }
+            .attraction-img {
+                border-radius: 16px;
+            }
+        }
+
+        /* Mobile par simple attractions (no border/radius) */
+        @media (max-width: 768px) {
+            .nearby-section {
+                background: #f0ede6;
+                padding: 1.5rem;
+                border-radius: 0;
+            }
+            .attraction-img {
+                border-radius: 0;
+            }
+            .attraction-card {
+                margin-right: 1rem;
+                width: 260px;
+            }
+        }
+
+        /* Reviews Carousel */
+        .reviews-section {
+            margin: 3rem 0;
+            padding: 0;
+            background: transparent;
+        }
+
+        .reviews-section .section-title {
+            color: #1a1a1a;
+            border-left-color: #e4ab02;
+            margin-top: 0;
+        }
+
+        .reviews-carousel {
+            position: relative;
+            max-width: 500px;
+            margin: 1.5rem auto;
+            overflow: hidden;
+            min-height: 150px;
+        }
+
+        .review-slide {
+            position: absolute;
+            width: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .review-slide.active {
+            opacity: 1;
+            position: relative;
+        }
+
+        .review-simple-stars {
+            color: #e4ab02;
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+
+        .review-simple-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #444;
+            margin-bottom: 0.8rem;
+            font-style: italic;
+        }
+
+        .review-simple-author {
+            font-size: 0.8rem;
+            color: #e4ab02;
+            font-weight: 600;
+        }
+
+        .review-dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .review-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ccc;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .review-dot.active {
+            background: #e4ab02;
+            width: 25px;
+            border-radius: 10px;
+        }
+
+        .contact-main {
+            margin: 2rem 0;
+        }
+
+        .contact-two-columns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .contact-info-card,
+        .contact-form-card {
+            flex: 1;
+            background: white;
+            border-radius: 28px;
+            padding: 2rem;
+            transition: all 0.4s;
+            opacity: 0;
+            transform: translateX(-30px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .contact-info-card.visible,
+        .contact-form-card.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .contact-info-card:hover,
+        .contact-form-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .contact-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .contact-detail-item:hover {
+            transform: translateX(5px);
+        }
+
+        .contact-detail-item i {
+            width: 45px;
+            height: 45px;
+            background: #f5f0e8;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            color: #e4ab02;
+        }
+
+        .contact-detail-item:hover i {
+            background: #e4ab02;
+            color: white;
+        }
+
+        .contact-form-card input,
+        .contact-form-card textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            background: #fafafa;
+            margin-bottom: 1rem;
+            transition: 0.3s;
+        }
+
+        .contact-form-card input:focus,
+        .contact-form-card textarea:focus {
+            border-color: #e4ab02;
+            outline: none;
+        }
+
+        .submit-contact {
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        .submit-contact:hover {
+            background: #e4ab02;
+            transform: scale(1.02);
+        }
+
+        .map-wrapper {
+            margin-top: 2rem;
+            border-radius: 28px;
+            overflow: hidden;
+            transition: 0.4s;
+            opacity: 0;
+            transform: scale(0.95);
+            width: 100%;
+        }
+
+        .map-wrapper.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .map-wrapper iframe {
+            width: 100%;
+            height: 350px;
+            border: none;
+        }
+
+        @media (max-width: 768px) {
+            .map-wrapper {
+                border-radius: 0;
+            }
+            .map-wrapper iframe {
+                height: 280px;
+            }
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #25D366;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99;
+            cursor: pointer;
+            transition: all 0.3s;
+            animation: glowPulse 2s infinite;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+
+        footer {
+            background: #1a1a1a;
+            color: #aaa;
+            margin-top: 3rem;
+            padding: 3rem 2rem 2rem;
+        }
+
+        .footer-inner {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 2rem;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .footer-column h4 {
+            color: #e4ab02;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .footer-column p, .footer-column a {
+            color: #aaa;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            text-decoration: none;
+            display: block;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .footer-column a:hover {
+            color: #e4ab02;
+            transform: translateX(5px);
+        }
+
+        .footer-column i {
+            margin-right: 8px;
+            width: 20px;
+            color: #e4ab02;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            width: 38px;
+            height: 38px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .social-links a:hover {
+            background: #e4ab02;
+            transform: translateY(-3px);
+        }
+
+        .social-links a:hover i {
+            color: #1a1a1a;
+        }
+
+        .social-links i {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .footer-logo-img {
+            width: 56px;
+            height: 50px;
+            object-fit: contain;
+            background: transparent;
+        }
+
+        .footer-logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .footer-logo-text span {
+            color: #e4ab02;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.75rem;
+        }
+
+        .modal-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-popup.active {
+            display: flex;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 700px;
+            width: 90%;
+            max-height: 85vh;
+            border-radius: 28px;
+            padding: 2rem;
+            position: relative;
+            overflow-y: auto;
+            animation: scaleIn 0.3s ease;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #888;
+            transition: 0.3s;
+        }
+
+        .modal-close:hover {
+            color: #e4ab02;
+            transform: rotate(90deg);
+        }
+
+        .modal-content h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            color: #e4ab02;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 800px) {
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                padding: 1.5rem 0;
+                gap: 1rem;
+            }
+            .nav-links.show {
+                display: flex;
+            }
+            .mobile-menu {
+                display: block;
+            }
+            .navbar {
+                padding: 0.5rem 1rem;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero {
+                min-height: 80vh;
+            }
+            .hotel-gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 550px) {
+            .hotel-gallery,
+            .rooms-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .section-title {
+                font-size: 1.6rem;
+            }
+        }
+    
+        .rating-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.14);backdrop-filter:blur(6px);border:1px solid rgba(228,171,2,.6);color:#fff;padding:8px 20px;border-radius:40px;margin:0 0 18px;font-size:.9rem}
+        .rating-badge i{color:#e4ab02}
+        .logo-mark{font-size:1.6rem;color:#e4ab02}
+        .ph{width:100%;height:100%;min-height:220px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:rgba(255,255,255,.92);font-size:.85rem;letter-spacing:1px;text-transform:uppercase}
+        .ph i{font-size:2.2rem;color:#e4ab02}
+        .reviews-summary{text-align:center;padding:2rem 1rem}
+        .reviews-summary .big{font-family:'Cormorant Garamond',serif;font-size:4.5rem;font-weight:700;color:#e4ab02;line-height:1}
+        .reviews-summary .stars{color:#e4ab02;margin:8px 0}
+        .reviews-summary p{color:#555}
+        .price-note{font-size:.75rem;color:#777;margin-top:-4px;margin-bottom:10px}
+
+        /* ===== Animations & image slots ===== */
+        .hero{position:relative;overflow:hidden;isolation:isolate}
+        .hero-slides{position:absolute;inset:0;z-index:-1}
+        .hero-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;animation:heroFade 18s infinite,kenburns 18s infinite}
+        .hero-slide::after{content:'';position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.4))}
+        .hero-slide:nth-child(2){animation-delay:6s}
+        .hero-slide:nth-child(3){animation-delay:12s}
+        @keyframes heroFade{0%{opacity:0}8%{opacity:1}33%{opacity:1}41%{opacity:0}100%{opacity:0}}
+        @keyframes kenburns{0%{transform:scale(1)}100%{transform:scale(1.18) translate(-1.5%,-1%)}}
+        .hero h1,.hero p,.hero-buttons,.rating-badge{animation:fadeInUp 1s both}
+        .rating-badge{animation-name:fadeInDown}
+        .hero h1{animation-delay:.2s}.hero p{animation-delay:.45s}.hero-buttons{animation-delay:.7s}
+        .scroll-progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#e4ab02,#fff1b8);z-index:200}
+        .ph{position:relative;overflow:hidden;background-size:200% 200%;animation:phShift 8s ease-in-out infinite}
+        @keyframes phShift{0%,100%{background-position:0 50%}50%{background-position:100% 50%}}
+        .ph::after{content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);transform:skewX(-20deg);animation:shine 3.5s infinite}
+        @keyframes shine{0%{left:-60%}60%,100%{left:130%}}
+        .gallery-card,.room-card,.facility-item{transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1),box-shadow .3s}
+        .gallery-card:hover,.room-card:hover{transform:translateY(-8px) !important;box-shadow:0 18px 40px rgba(0,0,0,.18)}
+        .gallery-card{cursor:zoom-in}
+        .facility-item:hover i{animation:bounceIn .7s}
+        .facility-item i{transition:transform .3s}
+        .facility-item:hover i{transform:scale(1.15) rotate(-6deg)}
+        .section-title{position:relative}
+        .section-title::after{content:'';display:block;width:0;height:3px;background:#e4ab02;margin:10px auto 0;border-radius:3px;transition:width 1s .2s}
+        .section-title.visible::after{width:90px}
+        .attraction-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+        .attraction-card:hover .attraction-img img,.attraction-card:hover .ph{transform:scale(1.08)}
+        .attraction-card .ph{transition:transform .6s;min-height:0}
+        .reviews-summary .big{display:inline-block;animation:glowPulse 3s infinite;border-radius:50%;padding:10px 30px}
+        .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:500;display:none;align-items:center;justify-content:center}
+        .lightbox.active{display:flex;animation:fadeIn .3s}
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+        .lightbox .lb-stage{max-width:92vw;max-height:84vh;display:flex;align-items:center;justify-content:center}
+        .lightbox img{max-width:92vw;max-height:84vh;border-radius:10px;animation:bounceIn .5s}
+        .lightbox .ph{width:min(90vw,700px);height:min(70vh,460px);border-radius:12px}
+        .lb-btn{position:absolute;background:rgba(255,255,255,.15);border:none;color:#fff;width:46px;height:46px;border-radius:50%;font-size:1.2rem;cursor:pointer;transition:.3s}
+        .lb-btn:hover{background:#e4ab02;color:#1a1a1a}
+        .lb-close{top:20px;right:20px}.lb-prev{left:20px}.lb-next{right:20px}
+        .lb-cap{position:absolute;bottom:22px;color:#fff;letter-spacing:1px}
+        @media (min-width:769px){.attraction-card.dup{display:none}}
+        @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}}
+    </style>
+</head>
+
+<body>
+    <div class="scroll-progress" id="scrollProgress"></div>
+    <div id="canvas-container"></div>
+    <div class="content">
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+                <div class="logo-area">
+                    <i class="fas fa-mountain-sun logo-mark float-animation"></i>
+                    <div class="logo-text">RESORT <span>SKARDU</span></div>
+                </div>
+                <div class="mobile-menu" id="mobileMenu"><i class="fas fa-bars"></i></div>
+                <div class="nav-links" id="navLinks">
+                    <a href="#home">HOME</a>
+                    <a href="#hotel-gallery">GALLERY</a>
+                    <a href="#rooms">ROOMS</a>
+                    <a href="#facilities">HIGHLIGHTS</a>
+                    <a href="#about">ABOUT</a>
+                    <a href="#reviews">REVIEWS</a>
+                    <a href="#contact">CONTACT</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="hero" id="home">
+            <div class="hero-slides" id="heroSlides"></div>
+            <div class="rating-badge"><i class="fas fa-star"></i> <strong>4.8</strong> &nbsp;·&nbsp; 17 Google reviews</div>
+            <h1><span>Welcome to</span><br>Resort Skardu</h1>
+            <p>A peaceful mountain stay in Gamba, Skardu. Comfortable double rooms from PKR 3,023 per night, with free cancellation on selected bookings.</p>
+            <div class="hero-buttons">
+                <button class="hero-btn hero-btn-primary" id="showAvailabilityBtn"><i class="fas fa-calendar-check"></i> Check Availability</button>
+                <button class="hero-btn hero-btn-secondary" id="showBookingBtn"><i class="fas fa-bed"></i> Book Now</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <section id="hotel-gallery">
+                <h2 class="section-title"><i class="fas fa-images"></i> Resort Gallery</h2>
+                <div class="hotel-gallery" id="hotelGallery"></div>
+            </section>
+
+            <section id="rooms">
+                <h2 class="section-title"><i class="fas fa-bed"></i> Our Rooms</h2>
+                <div class="rooms-grid" id="roomsGrid"></div>
+            </section>
+
+            <section id="facilities">
+                <h2 class="section-title"><i class="fas fa-concierge-bell"></i> Stay Highlights</h2>
+                <div class="facilities-grid" id="facilitiesGrid"></div>
+            </section>
+
+            <section id="about">
+                <h2 class="section-title"><i class="fas fa-info-circle"></i> About Resort Skardu</h2>
+                <div class="about-section-new">
+                    <p>Located in <strong>Gamba, Skardu</strong>, Resort Skardu is a guest-favourite stay with an outstanding <strong>4.8 rating from 17 Google reviews</strong>. It is a comfortable base for exploring the lakes, valleys and heritage sites of Gilgit-Baltistan.</p>
+                    <p>Our double rooms start from just <strong>PKR 3,023 per night</strong>, and the neighbourhood scores 3.5 / 5 as "great for visitors" for sightseeing, recreation and getting around.</p>
+                </div>
+            </section>
+
+            <section id="nearby-attractions" class="nearby-section">
+                <h2 class="section-title"><i class="fas fa-map-marked-alt"></i> Explore Around Skardu</h2>
+                <div class="attractions-wrapper">
+                    <div class="attractions-marquee" id="attractionsGrid"></div>
+                </div>
+            </section>
+
+            <section id="reviews" class="reviews-section">
+                <h2 class="section-title"><i class="fas fa-star"></i> Guest Rating</h2>
+                <div class="reviews-summary">
+                    <div class="big">4.8</div>
+                    <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p>Based on 17 Google reviews</p>
+                </div>
+            </section>
+
+            <section id="contact">
+                <h2 class="section-title"><i class="fas fa-address-card"></i> Get in Touch</h2>
+                <div class="contact-main">
+                    <div class="contact-two-columns">
+                        <div class="contact-info-card">
+                            <h3><i class="fas fa-map-pin"></i> Contact Information</h3>
+                            <div class="contact-detail-item"><i class="fas fa-map-marker-alt"></i><p><strong>Address</strong><br>8HF2+VC2, Gamba Skardu, Skardu, Gilgit-Baltistan</p></div>
+                            <div class="contact-detail-item"><i class="fas fa-tag"></i><p><strong>Rates from</strong><br><strong style="color:#e4ab02">PKR 3,023 / night</strong></p></div>
+                            <div class="contact-detail-item"><i class="fab fa-whatsapp"></i><p><strong>WhatsApp</strong><br><a id="waContactLink" href="#" target="_blank" style="color:#e4ab02">Message us on WhatsApp</a></p></div>
+                        </div>
+                        <div class="contact-form-card">
+                            <h3><i class="fas fa-paper-plane"></i> Send us a Message</h3>
+                            <form id="emailContactForm"><input type="text" id="contactName" placeholder="Your Name" required><input type="email" id="contactEmail" placeholder="Email" required><input type="text" id="contactSubject" placeholder="Subject"><textarea id="contactMessage" placeholder="Your Message..." required></textarea><button type="submit" class="submit-contact"><i class="fab fa-whatsapp"></i> Send Message</button></form>
+                        </div>
+                    </div>
+                    <div class="map-wrapper"><iframe src="https://www.google.com/maps?q=8HF2%2BVC2%20Gamba%20Skardu&output=embed" allowfullscreen="" loading="lazy" title="Resort Skardu location"></iframe></div>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <div class="footer-inner">
+                <div class="footer-column"><div class="footer-logo-area"><i class="fas fa-mountain-sun logo-mark"></i><div class="footer-logo-text">RESORT <span>SKARDU</span></div></div><p>A welcoming stay in Gamba, Skardu, where the mountains meet warm hospitality.</p><div class="social-links"><a href="https://www.google.com/maps/search/?api=1&query=8HF2%2BVC2+Gamba+Skardu" target="_blank" aria-label="Google Maps"><i class="fas fa-location-dot"></i></a><a class="waLink" href="#" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a></div></div>
+                <div class="footer-column"><h4><i class="fas fa-link"></i> Quick Links</h4><a href="#home"><i class="fas fa-home"></i> Home</a><a href="#hotel-gallery"><i class="fas fa-images"></i> Gallery</a><a href="#rooms"><i class="fas fa-bed"></i> Rooms</a><a href="#facilities"><i class="fas fa-concierge-bell"></i> Highlights</a><a href="#about"><i class="fas fa-info-circle"></i> About</a><a href="#contact"><i class="fas fa-phone-alt"></i> Contact</a></div>
+                <div class="footer-column"><h4><i class="fas fa-info-circle"></i> Information</h4><a class="popup-link" data-popup="privacy"><i class="fas fa-lock"></i> Privacy Policy</a><a class="popup-link" data-popup="terms"><i class="fas fa-file-contract"></i> Terms &amp; Conditions</a><a class="popup-link" data-popup="cancellation"><i class="fas fa-ban"></i> Cancellation Policy</a></div>
+                <div class="footer-column"><h4><i class="fas fa-map-marker-alt"></i> Find Us</h4><p><i class="fas fa-location-dot"></i> 8HF2+VC2, Gamba Skardu</p><p><i class="fas fa-star"></i> 4.8 · 17 reviews</p></div>
+            </div>
+            <div class="footer-bottom"><p>© 2026 RESORT SKARDU. All Rights Reserved.</p></div>
+        </footer>
+    </div>
+
+    <div id="availabilityModal" class="popup-modal">
+        <div class="popup-content"><span class="popup-close">&times;</span><h3><i class="fas fa-calendar-check"></i> Check Availability</h3><div class="popup-field"><label>CHECK IN</label><input type="date" id="popupCheckin"></div><div class="popup-field"><label>CHECK OUT</label><input type="date" id="popupCheckout"></div><div class="popup-field"><label>GUESTS</label><select id="popupGuests"><option>1 Guest</option><option selected>2 Guests</option><option>3 Guests</option><option>4 Guests</option><option>5+ Guests</option></select></div><button class="popup-btn" id="popupAvailabilityBtn"><i class="fab fa-whatsapp"></i> Check on WhatsApp</button></div>
+    </div>
+
+    <div id="bookingModal" class="popup-modal">
+        <div class="popup-content"><span class="popup-close">&times;</span><h3><i class="fas fa-bed"></i> Book Your Stay</h3><div class="popup-field"><label>CHECK IN</label><input type="date" id="popupBookCheckin"></div><div class="popup-field"><label>CHECK OUT</label><input type="date" id="popupBookCheckout"></div><div class="popup-field"><label>GUESTS</label><select id="popupBookGuests"><option>1 Guest</option><option selected>2 Guests</option><option>3 Guests</option><option>4 Guests</option><option>5+ Guests</option></select></div><div class="popup-field"><label>ROOM TYPE</label><select id="popupRoomType"><option>Double Room</option></select></div><button class="popup-btn" id="popupBookBtn"><i class="fab fa-whatsapp"></i> Book Now on WhatsApp</button></div>
+    </div>
+
+    <div class="lightbox" id="lightbox"><button class="lb-btn lb-close" id="lbClose" aria-label="Close"><i class="fas fa-times"></i></button><button class="lb-btn lb-prev" id="lbPrev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button><div class="lb-stage" id="lbStage"></div><button class="lb-btn lb-next" id="lbNext" aria-label="Next"><i class="fas fa-chevron-right"></i></button><div class="lb-cap" id="lbCap"></div></div>
+
+    <div id="infoModal" class="modal-popup">
+        <div class="modal-content"><span class="modal-close">&times;</span><div id="popupContent"></div></div>
+    </div>
+
+    <a href="#" target="_blank" class="whatsapp-float waLink"><i class="fab fa-whatsapp fa-2x" style="color:white"></i></a>
+
+    <script>
+        // ====== EDIT THESE ======
+        const HOTEL_NAME = "Resort Skardu";
+        const WA_NUMBER  = "92XXXXXXXXXX";   // <-- put the real WhatsApp number here, e.g. 923001234567
+        const PLACE      = "8HF2+VC2, Gamba Skardu, Skardu";
+        const BASE_PRICE = 3023;             // PKR per night (Agoda rate)
+        // ========================
+
+        const waUrl = (text) => `https://wa.me/${WA_NUMBER}` + (text ? `?text=${encodeURIComponent(text)}` : '');
+        document.querySelectorAll('.waLink').forEach(a => a.href = waUrl());
+        document.getElementById('waContactLink').href = waUrl();
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
+        }, { threshold: 0.15 });
+
+        // ====== IMAGES ======
+        // Save your photos in an "image" folder next to index.html (see list below).
+        // Any missing photo automatically shows an animated placeholder instead.
+        const IMG_DIR = "image/";
+        const HERO_IMAGES = ["hero-1.jpg", "hero-2.jpg", "hero-3.jpg"];
+
+        const ph = (icon, label, c1, c2) => `<div class="ph" style="background-image:linear-gradient(135deg,${c1},${c2},${c1})"><i class="fas ${icon}"></i><span>${label}</span></div>`;
+        function phFallback(img) { const d = img.dataset; img.outerHTML = ph(d.icon, d.label, d.c1, d.c2); }
+        const media = (item) => item.img
+            ? `<img src="${IMG_DIR}${item.img}" loading="lazy" alt="${item.label}" data-icon="${item.icon}" data-label="${item.label}" data-c1="${item.c1}" data-c2="${item.c2}" onerror="phFallback(this)">`
+            : ph(item.icon, item.label, item.c1, item.c2);
+
+        // Hero slideshow (slides without a real image are removed, gradient stays)
+        const heroSlides = document.getElementById('heroSlides');
+        HERO_IMAGES.forEach(f => { const probe = new Image(); probe.onload = () => { const d = document.createElement('div'); d.className = 'hero-slide'; d.style.backgroundImage = `url('${IMG_DIR}${f}')`; heroSlides.appendChild(d); [...heroSlides.children].forEach((el, i) => el.style.animationDelay = `${i * 6}s`); }; probe.src = IMG_DIR + f; });
+
+        const gallery = [
+            { label: "Exterior",       img: "hotel-1.jpg", icon: "fa-hotel",     c1: "#3d2c4a", c2: "#1b3a4b" },
+            { label: "Rooms",          img: "hotel-2.jpg", icon: "fa-bed",       c1: "#1b3a4b", c2: "#2f5d62" },
+            { label: "Mountain Views", img: "hotel-3.jpg", icon: "fa-mountain",  c1: "#0d1b2a", c2: "#3b6978" },
+            { label: "Food & Drink",   img: "hotel-4.jpg", icon: "fa-utensils",  c1: "#5b3a29", c2: "#2f5d62" },
+            { label: "Lounge",         img: "hotel-5.jpg", icon: "fa-couch",     c1: "#2f5d62", c2: "#3d2c4a" },
+            { label: "From Visitors",  img: "hotel-6.jpg", icon: "fa-camera",    c1: "#3b6978", c2: "#5b3a29" }
+        ];
+        const galleryContainer = document.getElementById('hotelGallery');
+        gallery.forEach((g, idx) => { const card = document.createElement('div'); card.className = 'gallery-card'; card.style.transitionDelay = `${idx * 0.1}s`; card.dataset.idx = idx; card.innerHTML = `<div class="gallery-img">${media(g)}</div><div class="info"><i class="fas fa-camera"></i> ${g.label}</div>`; galleryContainer.appendChild(card); observer.observe(card); });
+
+        // Lightbox
+        const lb = document.getElementById('lightbox'), lbStage = document.getElementById('lbStage'), lbCap = document.getElementById('lbCap');
+        let lbIndex = 0;
+        function showLb(i) { lbIndex = (i + gallery.length) % gallery.length; const g = gallery[lbIndex]; lbStage.innerHTML = media(g); lbCap.textContent = `${g.label}  ·  ${lbIndex + 1}/${gallery.length}`; }
+        galleryContainer.addEventListener('click', e => { const c = e.target.closest('.gallery-card'); if (c) { showLb(+c.dataset.idx); lb.classList.add('active'); } });
+        document.getElementById('lbClose').onclick = () => lb.classList.remove('active');
+        document.getElementById('lbPrev').onclick = () => showLb(lbIndex - 1);
+        document.getElementById('lbNext').onclick = () => showLb(lbIndex + 1);
+        lb.addEventListener('click', e => { if (e.target === lb) lb.classList.remove('active'); });
+        document.addEventListener('keydown', e => { if (!lb.classList.contains('active')) return; if (e.key === 'Escape') lb.classList.remove('active'); if (e.key === 'ArrowLeft') showLb(lbIndex - 1); if (e.key === 'ArrowRight') showLb(lbIndex + 1); });
+
+        const rooms = [
+            { id: 1, name: "Double Room", beds: "1 Double Bed", price: BASE_PRICE, fac: ["Free cancellation on selected bookings", "Gamba, Skardu"], label: "Double Room", img: "room-1.jpg", icon: "fa-bed", c1: "#1b3a4b", c2: "#2f5d62" }
+        ];
+        const durations = { night: [1, '1 Night'], '2days': [2, '2 Nights'], '3days': [3, '3 Nights'] };
+        const fmt = n => 'PKR ' + n.toLocaleString('en-PK');
+        const selectedDuration = {};
+        const roomsGrid = document.getElementById('roomsGrid');
+
+        function renderRooms() {
+            roomsGrid.innerHTML = '';
+            rooms.forEach((room, idx) => {
+                if (!selectedDuration[room.id]) selectedDuration[room.id] = 'night';
+                const [n, txt] = durations[selectedDuration[room.id]];
+                const total = room.price * n;
+                const card = document.createElement('div'); card.className = 'room-card visible'; card.style.transitionDelay = `${idx * 0.1}s`;
+                card.innerHTML = `<div class="room-img">${media(room)}</div><div class="room-info"><h3 style="font-size:1.5rem; font-family:'Cormorant Garamond'">${room.name}</h3><div><i class="fas fa-bed"></i> ${room.beds}</div><div style="margin:10px 0">${room.fac.map(f => `<span style="background:#f0f0f0; padding:4px 12px; border-radius:40px; font-size:0.7rem; margin:2px; display:inline-block"><i class="fas fa-check"></i> ${f}</span>`).join('')}</div><div style="font-size:1.8rem; font-weight:600; margin:10px 0">${fmt(total)}</div><div class="price-note">${txt} · ${fmt(room.price)} per night</div><div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px">${Object.entries(durations).map(([k, v]) => `<button data-id="${room.id}" data-dur="${k}" class="optBtn ${selectedDuration[room.id] === k ? 'opt-active' : ''}"><i class="fas fa-moon"></i> ${v[1]}</button>`).join('')}</div><button class="bookNowDirect" data-room="${room.name}" data-total="${total}" data-dur-text="${txt}" style="width:100%; background:#e4ab02; color:#1a1a1a; border:none; padding:12px; border-radius:40px; font-weight:bold; cursor:pointer"><i class="fab fa-whatsapp"></i> Book Now</button></div>`;
+                roomsGrid.appendChild(card);
+            });
+            document.querySelectorAll('.optBtn').forEach(btn => btn.addEventListener('click', () => { selectedDuration[parseInt(btn.dataset.id)] = btn.dataset.dur; renderRooms(); }));
+            document.querySelectorAll('.bookNowDirect').forEach(btn => btn.addEventListener('click', () => {
+                window.open(waUrl(`🏨 BOOKING REQUEST\n🛏️ Room: ${btn.dataset.room}\n📆 Duration: ${btn.dataset.durText}\n💰 Total: ${fmt(parseInt(btn.dataset.total))}\n📍 ${HOTEL_NAME}, ${PLACE}`), '_blank');
+            }));
+        }
+        renderRooms();
+
+        const facilities = [
+            { icon: "fa-star",          name: "Rated 4.8",          text: "From 17 Google reviews" },
+            { icon: "fa-bed",           name: "Double Bed Rooms",   text: "Comfortable and affordable" },
+            { icon: "fa-rotate-left",   name: "Free Cancellation",  text: "On selected bookings" },
+            { icon: "fa-binoculars",    name: "Great for Visitors", text: "Sightseeing, recreation & getting around" },
+            { icon: "fa-location-dot",  name: "Gamba, Skardu",      text: "Easy access to Skardu sights" },
+            { icon: "fa-tag",           name: "From PKR 3,023",     text: "Per night, double room" }
+        ];
+        const facilitiesGrid = document.getElementById('facilitiesGrid');
+        facilities.forEach((fac, idx) => { const item = document.createElement('div'); item.className = 'facility-item'; item.style.transitionDelay = `${idx * 0.08}s`; item.innerHTML = `<i class="fas ${fac.icon}"></i><h3>${fac.name}</h3><p>${fac.text}</p>`; facilitiesGrid.appendChild(item); observer.observe(item); });
+
+        // Same photos as the Safena site: put them in the "image" folder with these file names
+        const attractions = [
+            { name: "Shangrila Resort",     desc: "Heart-shaped lake, iconic resort", img: "shangrila.jpg",      icon: "fa-water",      c1: "#1b3a4b", c2: "#2f5d62" },
+            { name: "Satpara Lake",         desc: "Crystal clear turquoise water",    img: "sadpara.jpg",        icon: "fa-water",      c1: "#3b6978", c2: "#1b3a4b" },
+            { name: "Deosai National Park", desc: "Second highest plateau",           img: "deosai.jpg",         icon: "fa-mountain",   c1: "#4a5d3a", c2: "#1b3a4b" },
+            { name: "Manthokha Waterfall",  desc: "Majestic waterfall",               img: "manthokha.jpg",      icon: "fa-droplet",    c1: "#0d1b2a", c2: "#3b6978" },
+            { name: "Cold Desert Skardu",   desc: "High-altitude desert",             img: "cold.jpg",           icon: "fa-sun",        c1: "#8a6a3a", c2: "#3d2c4a" },
+            { name: "Khaplu Palace",        desc: "Historic palace",                  img: "khapluo_place.jpg",  icon: "fa-landmark",   c1: "#3d2c4a", c2: "#5b3a29" },
+            { name: "Shigar Fort",          desc: "Heritage fort",                    img: "shigar_fort.jpg",    icon: "fa-chess-rook", c1: "#5b3a29", c2: "#2f5d62" },
+            { name: "Blind Lake",           desc: "Hidden gem",                       img: "blind_lake.jpg",     icon: "fa-water",      c1: "#2f5d62", c2: "#0d1b2a" },
+            { name: "Basho Valley",         desc: "Pine forests",                     img: "basho.jpg",          icon: "fa-tree",       c1: "#2d4a3a", c2: "#1b3a4b" },
+            { name: "Hushe Valley",         desc: "Gateway to peaks",                 img: "hushe_valley.jpg",   icon: "fa-mountain",   c1: "#0d1b2a", c2: "#4a5d3a" }
+        ];
+        const attractionsGrid = document.getElementById('attractionsGrid');
+        const attImg = (att) => `<img src="${IMG_DIR}${att.img}" loading="lazy" alt="${att.name}" data-icon="${att.icon}" data-label="${att.name}" data-c1="${att.c1}" data-c2="${att.c2}" onerror="phFallback(this)">`;
+        [false, true].forEach(dup => attractions.forEach((att) => { const card = document.createElement('div'); card.className = 'attraction-card' + (dup ? ' dup' : ''); if (dup) card.setAttribute('aria-hidden', 'true'); card.innerHTML = `<div class="attraction-img">${attImg(att)}</div><div class="attraction-info"><h3><i class="fas fa-map-marker-alt"></i> ${att.name}</h3><p>${att.desc}</p></div>`; attractionsGrid.appendChild(card); }));
+
+        const availabilityModal = document.getElementById('availabilityModal');
+        const bookingModal = document.getElementById('bookingModal');
+        const today = new Date().toISOString().split('T')[0];
+        ['popupCheckin', 'popupCheckout', 'popupBookCheckin', 'popupBookCheckout'].forEach(id => document.getElementById(id).min = today);
+
+        document.getElementById('showAvailabilityBtn').onclick = () => availabilityModal.classList.add('active');
+        document.getElementById('showBookingBtn').onclick = () => bookingModal.classList.add('active');
+        document.querySelectorAll('.popup-close').forEach(closeBtn => {
+            closeBtn.onclick = () => { availabilityModal.classList.remove('active'); bookingModal.classList.remove('active'); };
+        });
+        window.addEventListener('click', (e) => {
+            if (e.target === availabilityModal) availabilityModal.classList.remove('active');
+            if (e.target === bookingModal) bookingModal.classList.remove('active');
+        });
+
+        document.getElementById('popupAvailabilityBtn').onclick = () => {
+            const ci = document.getElementById('popupCheckin').value;
+            if (!ci) { alert("Select check-in date"); return; }
+            const co = document.getElementById('popupCheckout').value;
+            const guests = document.getElementById('popupGuests').value;
+            window.open(waUrl(`🔍 AVAILABILITY CHECK\n📅 Check-in: ${ci}\n📅 Check-out: ${co || 'flexible'}\n👥 Guests: ${guests}\n📍 ${HOTEL_NAME}, ${PLACE}`), '_blank');
+            availabilityModal.classList.remove('active');
+        };
+        document.getElementById('popupBookBtn').onclick = () => {
+            const ci = document.getElementById('popupBookCheckin').value;
+            if (!ci) { alert("Select check-in date"); return; }
+            const co = document.getElementById('popupBookCheckout').value;
+            const guests = document.getElementById('popupBookGuests').value;
+            const room = document.getElementById('popupRoomType').value;
+            window.open(waUrl(`🏨 NEW BOOKING\n📅 Check-in: ${ci}\n📅 Check-out: ${co || 'flexible'}\n👥 Guests: ${guests}\n🛏️ Room: ${room}\n📍 ${HOTEL_NAME}, ${PLACE}`), '_blank');
+            bookingModal.classList.remove('active');
+        };
+
+        document.getElementById('emailContactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('contactName').value, email = document.getElementById('contactEmail').value, subj = document.getElementById('contactSubject').value, msg = document.getElementById('contactMessage').value;
+            window.open(waUrl(`📧 CONTACT\n👤 ${name}\n📧 ${email}\n📝 ${subj}\n💬 ${msg}`), '_blank');
+            e.target.reset();
+        });
+        document.getElementById('mobileMenu').onclick = () => document.getElementById('navLinks').classList.toggle('show');
+        document.querySelectorAll('.about-section-new, .contact-info-card, .contact-form-card, .map-wrapper').forEach(el => observer.observe(el));
+
+        const prog = document.getElementById('scrollProgress');
+        window.addEventListener('scroll', () => { const h = document.documentElement.scrollHeight - innerHeight; prog.style.width = (h > 0 ? scrollY / h * 100 : 0) + '%'; }, { passive: true });
+        document.querySelectorAll('.section-title').forEach(el => observer.observe(el));
+        const big = document.querySelector('.reviews-summary .big');
+        new IntersectionObserver((en, o) => { if (en[0].isIntersecting) { let v = 0; const t = setInterval(() => { v += 0.2; big.textContent = Math.min(v, 4.8).toFixed(1); if (v >= 4.8) clearInterval(t); }, 40); o.disconnect(); } }, { threshold: .5 }).observe(big);
+
+        const navbar = document.getElementById('navbar');
+        let lastScrollY = window.scrollY, ticking = false;
+        function updateNavbar() {
+            const y = window.scrollY;
+            if (y > lastScrollY && y > 50) { navbar.classList.add('hide'); navbar.classList.remove('scrolled'); }
+            else if (y < lastScrollY) { navbar.classList.remove('hide'); y > 50 ? navbar.classList.add('scrolled') : navbar.classList.remove('scrolled'); }
+            lastScrollY = y; ticking = false;
+        }
+        window.addEventListener('scroll', () => { if (!ticking) { requestAnimationFrame(updateNavbar); ticking = true; } });
+        updateNavbar();
+
+        const style = document.createElement('style'); style.textContent = `.opt-active{background:#e4ab02 !important;color:#1a1a1a !important}.optBtn{background:#e0e0e0;border:none;padding:6px 14px;border-radius:40px;cursor:pointer;font-size:0.8rem;transition:0.3s}.optBtn:hover{transform:scale(1.05)}`; document.head.appendChild(style);
+
+        const modal = document.getElementById('infoModal');
+        const popupContent = document.getElementById('popupContent');
+        const popupData = {
+            privacy: `<h2><i class="fas fa-lock"></i> Privacy Policy</h2><p>${HOTEL_NAME} only uses the details you share (name, email, dates) to respond to your enquiry or booking. We do not sell your information.</p>`,
+            terms: `<h2><i class="fas fa-file-contract"></i> Terms &amp; Conditions</h2><p>Bookings are confirmed once acknowledged by ${HOTEL_NAME}. Rates shown start from PKR 3,023 per night for a double room and may vary by date and season.</p>`,
+            cancellation: `<h2><i class="fas fa-ban"></i> Cancellation Policy</h2><p>Free cancellation is available on selected bookings (for example, until the day before check-in). Please confirm the terms of your rate when booking.</p>`
+        };
+        function openPopup(type) { popupContent.innerHTML = popupData[type] || "<p>Content coming soon...</p>"; modal.classList.add('active'); document.body.style.overflow = 'hidden'; }
+        function closePopup() { modal.classList.remove('active'); document.body.style.overflow = ''; }
+        document.querySelectorAll('.popup-link').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); openPopup(link.getAttribute('data-popup')); }));
+        document.querySelector('.modal-close').addEventListener('click', closePopup);
+        modal.addEventListener('click', (e) => { if (e.target === modal) closePopup(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('active')) closePopup(); });
+    </script>
+</body>
+
+</html>
